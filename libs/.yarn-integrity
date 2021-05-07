@@ -1,0 +1,24 @@
+{
+  "systemParams": "win32-x64-83",
+  "modulesFolders": [
+    "libs"
+  ],
+  "flags": [],
+  "linkedModules": [],
+  "topLevelPatterns": [
+    "bootstrap@^4.6.0",
+    "chart.js@^3.2.1",
+    "d3.chart@^0.3.0",
+    "d3.js@^0.0.2-security",
+    "jquery@^3.6.0"
+  ],
+  "lockfileEntries": {
+    "bootstrap@^4.6.0": "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.6.0.tgz#97b9f29ac98f98dfa43bf7468262d84392552fd7",
+    "chart.js@^3.2.1": "https://registry.yarnpkg.com/chart.js/-/chart.js-3.2.1.tgz#1a17d6a88cef324ef711949e227eb51d6c4c26d3",
+    "d3.chart@^0.3.0": "https://registry.yarnpkg.com/d3.chart/-/d3.chart-0.3.0.tgz#8701e5662f0166ca8166e53ae834d4861ac08e8c",
+    "d3.js@^0.0.2-security": "https://registry.yarnpkg.com/d3.js/-/d3.js-0.0.2-security.tgz#70b602e9fe3eb6f35bdff355ff58cd588d85ca9a",
+    "jquery@^3.6.0": "https://registry.yarnpkg.com/jquery/-/jquery-3.6.0.tgz#c72a09f15c1bdce142f49dbf1170bdf8adac2470"
+  },
+  "files": [],
+  "artifacts": {}
+}

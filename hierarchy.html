@@ -1,0 +1,63 @@
+<html>
+ 
+<head>
+    <link rel="stylesheet" type="text/css" href="libs/bootstrap/dist/css/bootstrap.min.css">
+    <style>
+        .node {
+            cursor: pointer;
+        }
+
+        .node circle {
+            fill: #fff;
+            stroke: steelblue;
+            stroke-width: 1.5px;
+        }
+
+        .node text {
+            font: 10px sans-serif;
+        }
+
+        .link {
+            fill: none;
+            stroke: #ccc;
+            stroke-width: 1.5px;
+        }
+
+        body,html {
+            overflow: hidden;
+            height:100%;
+            width:100%;
+            background-color: black;
+        }
+            .toolTip {
+        position: absolute;
+        display: none;
+        width: auto;
+        height: auto;
+        background: none repeat scroll 0 0 white;
+        border: 0 none;
+        border-radius: 8px 8px 8px 8px;
+        box-shadow: -3px 3px 15px #888888;
+        color: black;
+        font: 12px sans-serif;
+        padding: 5px;
+        text-align: center;
+    }
+    </style>
+</head>
+ 
+<body>
+    <script type="text/javascript" src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>    
+    
+    
+    <div id="chart" style="padding: 1%; height: 280; width: 700; float: none; margin: 0px auto;" ></div>
+    <!-- This will serve as a container for our chart. This does not have to be a div, and can in fact, just be the body if you want. -->
+
+</body>
+<script type="text/javascript" src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>    
+<script type="text/javascript" src="libs/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="libs/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="libs/chart.js/dist/Chart.min.js"></script>
+<script type="text/javascript" src="js/tableau.extensions.1.4.0.min.js"></script>
+<script type="text/javascript" src="js/hierarchy.js"></script>
+</html>

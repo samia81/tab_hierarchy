@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+		<script src="../bower_components/aight/aight.js"></script>
+		<script src="../bower_components/mocha/mocha.js"></script>
+		<script src="../bower_components/assert/assert.js"></script>
+		<script src="lib/sinon.js"></script>
+		<script>
+			mocha.setup({
+				ui: 'tdd'
+			});
+		</script>
+		<link href="../bower_components/mocha/mocha.css" rel="stylesheet"></link>
+		<title>d3.chart test suite</title>
+	</head>
+	<body>
+		<div>
+			<h1>Test Sources</h1>
+			<p>
+				<a href="?">Direct</a> |
+				<a href="?testSource=amd">AMD</a>* |
+				<a href="?testSource=commonjs">CommonJS</a>* |
+				<a href="?testSource=global">Global</a>*</p>
+			<p>(* requires built file)</p>
+		</div>
+		<div id="mocha"></div>
+		<div id="test"></div>
+		<script>
+(function() {
+	"use strict";
+	function loadScript(script, done) {
+		var el = document.createElement("script");
+		el.src = script;
+		el.addEventListener("load", done);
+		document.head.appendChild(el);
+	}
+	function loadScripts(scripts, done) {
+		if (scripts.length === 0) {
+			setTimeout(done, 0);
+			return;
+		}
+
+		loadScript(scripts.shift(), function() {
+			loadScripts(scripts, done);
+		});
+	}
+	function getSourceHeadful(sources, search) {
+		var params = search.slice(1).split("&");
+		var sourceName = "direct";
+
+		params.forEach(function(param) {
+			var parts = param.split("=");
+			if (parts[0] === "testSource") {
+				sourceName = parts[1];
+			}
+		});
+
+		return sources[sourceName];
+	}
+	function getSourceHeadless(sources, _, userAgent) {
+		var sourceName = userAgent.match(/PhantomJS:testSource\((.*)\)/)[1];
+		return sources[sourceName];
+	}
+	var getSource = navigator.userAgent.indexOf("PhantomJS") === -1 ?
+		getSourceHeadful : getSourceHeadless;
+	var sources = {
+		direct: {
+			prereqs: ["lib/require.js"],
+			setup: function(done) {
+				require({
+					baseUrl: "../src",
+					paths: {
+						d3: "../bower_components/d3/d3"
+					},
+					shim: {
+						d3: {
+							exports: "d3"
+						}
+					}
+				});
+
+				require(["d3", "chart-extensions"], function(d3, d3chart) {
+					done(null, d3, d3chart);
+				});
+			}
+		},
+		amd: {
+			prereqs: ["lib/require.js"],
+			setup: function(done) {
+				require({
+					baseUrl: "../",
+					paths: {
+						d3: "bower_components/d3/d3",
+						"d3.chart": "test/d3.chart.test-build"
+					},
+					shim: {
+						d3: {
+							exports: "d3"
+						}
+					}
+				});
+
+				require(["d3", "d3.chart"], function(d3, d3chart) {
+					if (typeof d3chart !== "function") {
+						done(new Error("Application failed to load d3.chart."));
+						return;
+					}
+
+					done(null, d3, d3chart);
+				});
+			}
+		},
+		commonjs: {
+			prereqs: [
+				"sample-cjs-app/packaged.js"
+			],
+			setup: function(done) {
+				if (!window.app) {
+					done(new Error("Application global not found."));
+					return;
+				}
+
+				done(null, window.app.d3, window.app.d3chart);
+			}
+		},
+		global: {
+			prereqs: [
+				"../bower_components/d3/d3.js",
+				"d3.chart.test-build.js"
+			],
+			setup: function(done) {
+				done(null, window.d3, window["d3.chart"]);
+			}
+		}
+	};
+	var source = getSource(sources, location.search, navigator.userAgent);
+
+	if (!source) {
+		test("d3.chart test source defined correctly", function() {
+			throw new Error("d3.chart test source not recognized!");
+		});
+		mocha.run();
+		return;
+	}
+
+	loadScripts(source.prereqs, function() {
+		source.setup(function(err, d3, d3chart) {
+
+			test("d3.chart loaded successfully", function() {
+				if (err) {
+					throw err;
+				}
+
+				if (d3chart !== d3.chart) {
+					throw new Error("d3chart not attached to `d3` object.");
+					return;
+				}
+
+				window.d3 = d3;
+			});
+
+			loadScripts([
+					"../test/tests/chart.js",
+					"../test/tests/layer.js",
+					"../test/tests/integration.js"
+				], function() {
+					mocha.run();
+				});
+		});
+	});
+}());
+		</script>
+	</body>
+</html>
