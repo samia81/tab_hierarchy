@@ -1,0 +1,15 @@
+{
+  "name": "hierarchy",
+  "version": "1",
+  "main": "index.js",
+  "repository": "https://github.com/samia81/tableau-extensions-1.git",
+  "author": "samia81 <snaciri@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^4.6.0",
+    "chart.js": "^3.2.1",
+    "d3.chart": "^0.3.0",
+    "d3.js": "^0.0.2-security",
+    "jquery": "^3.6.0"
+  }
+}

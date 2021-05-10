@@ -89,7 +89,7 @@
          for (var i = 0; i < worksheetData.length; i++) {
             var cin_level1 = worksheetData[i][0].formattedValue;
             var papa_level1 = worksheetData[i][1].value;
-            if (papa_level1.indexOf("null") >= 0 && papa_level1 == sondeur && compteur_equipe != 0) {
+            if ( papa_level1 == sondeur && compteur_equipe != 0) {
 
                add_fils(arbre_equipe["children"], cin_level1, "blanc", 1, worksheetData)
                compteur_equipe = compteur_equipe - 1;
