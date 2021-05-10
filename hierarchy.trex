@@ -7,7 +7,7 @@
     <author name="Your Name" email="Your Email" organization="Your Org" website="https://tableau.toanhoang.com"/>
     <min-api-version>0.9</min-api-version>
     <source-location>
-      <url>http://localhost:8080/hierarchy.html</url>
+      <url>http://hierarchy.netlify.app</url>
     </source-location>
     <icon></icon>
     <permissions>
