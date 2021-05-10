@@ -1,5 +1,6 @@
 'use strict';
 (function () {
+   var level=1
    $(document).ready(function () {
       // Initialises Tableau Data Extension
       tableau.extensions.initializeAsync().then(function () {
@@ -16,7 +17,7 @@
       var worksheet = worksheets.find(function (sheet) {
          return sheet.name === "data";
       });
-      var image_i = "https://e7.pngegg.com/pngimages/647/460/png-clipart-computer-icons-open-person-family-icon-black-silhouette-black.png"
+      var image_i = "https://hierarchy.netlify.app/image/blanc.png", image_g = "https://hierarchy.netlify.app/image/gris.png"
       var arbre_equipe = {
          "name": "Sondeur",
          "icon": image_i,
@@ -24,19 +25,15 @@
 
       };
       function add_fils(child_l2, name_f, type_image, compteur_fils, data_h) {
+         level++
          var icon = "";
          if (type_image == "blanc") {
             icon = image_i
          }
          else
-            icon = ""
+            icon = image_g
          for (var i = 0; i < compteur_fils; i++) {
-            var fils = {
-               "name": name_f,
-               "children": [],
-               "icon": icon
-            }
-            child_l2.push(fils)
+
             var nbre_fils = 2
             // if(type_image=="blanc") {
             // search and add children
@@ -49,20 +46,33 @@
                      "children": [],
                      "icon": icon
                   }
-                  fils["children"].push(fils_2)
+                  child_l2.push(fils_2)
+                  if (level<=2 ){
+                     add_fils(fils_2['children'], cin_level2, 'blanc', 1, data_h)
+                     level--
+                  }
                   nbre_fils--;
+               
                }
             }
             for (var k = 0; k < nbre_fils; k++) {
                var fils_2 = {
                   "name": "vide",
                   "children": [],
-                  "icon": icon
+                  "icon": image_g
                }
-               fils["children"].push(fils_2)
+               child_l2.push(fils_2)
+               if (level<=2 ) {
+                     add_fils(fils_2['children'], "vide", 'gris', 1, data_h)
+                     level--
+                     
+               }
+
             }
+            
             //}
          }
+         
       }
       // Call a function on the worksheet Object to get the Summary Data.
       worksheet.getSummaryDataAsync().then(function (sumdata) {
@@ -78,6 +88,7 @@
 
          // cin, affil, equipe1,role
          var sondeur = "", papa = "", cin = "";
+         
          for (var i = 0; i < worksheetData.length; i++) {
             cin = worksheetData[i][0].formattedValue
             papa = worksheetData[i][1].value
@@ -89,9 +100,15 @@
          for (var i = 0; i < worksheetData.length; i++) {
             var cin_level1 = worksheetData[i][0].formattedValue;
             var papa_level1 = worksheetData[i][1].value;
-            if ( papa_level1 == sondeur && compteur_equipe != 0) {
-
-               add_fils(arbre_equipe["children"], cin_level1, "blanc", 1, worksheetData)
+            if (papa_level1 == sondeur && compteur_equipe != 0) {
+               var fils = {
+                  "name": cin_level1,
+                  "children": [],
+                  "icon": image_i
+               }
+               arbre_equipe["children"].push(fils)
+               add_fils(fils["children"], cin_level1, "blanc", 1, worksheetData)
+               level=1
                compteur_equipe = compteur_equipe - 1;
 
             }
@@ -101,13 +118,13 @@
 
          // Draw the chart as before.
          var margin = {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0
+            top: 20,
+            right: 20,
+            bottom: 20,
+            left: 20
          },
-            width = 700 - margin.right - margin.left,
-            height = 280 - margin.top - margin.bottom;
+            width = 1050 - margin.right - margin.left,
+            height = 330 - margin.top - margin.bottom;
 
 
 
@@ -117,7 +134,8 @@
             rectW = 20,
             rectH = 30;
 
-         var tree = d3.layout.tree().nodeSize([rectW, rectH]);
+         //var tree = d3.layout.tree().nodeSize([rectW, rectH]);
+         var tree = d3.layout.tree().size([height, width]);
          var diagonal = d3.svg.diagonal()
             .projection(function (d) {
                return [d.x + rectW / 2, d.y + rectH / 2];
@@ -132,12 +150,12 @@
          }
 
          var zm = d3.behavior.zoom().scaleExtent([1, 3]).on("zoom", redraw)
-         var svg = d3.select("#chart").append("svg").attr("width", 700).attr("height", 280)
+         var svg = d3.select("#chart").append("svg").attr("width", width).attr("height", height)
             .attr("style", "position: absolute;")
             .call(zm)
 
          var g = svg.append("g")
-            .attr("transform", "translate(" + 175 + "," + 0 + ")");
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
          var div = d3.select("body").append("div")
             .attr("class", "tooltip")
@@ -145,10 +163,10 @@
 
          //necessary so that zoom knows where to zoom and unzoom from
          zm.translate([350, 20]);
-
-         root.x0 = width / 2;
+         
+         root.x0 = width/ 2 ;
          root.y0 = 0;
-         //update(root)
+          
          function collapse(d) {
             if (d.children) {
                d._children = d.children;
@@ -189,7 +207,7 @@
 
             // Normalize for fixed-depth.
             nodes.forEach(function (d) {
-               d.y = d.depth * 50;
+               d.y = d.depth * 60;
             });
 
             // Update the nodes…
