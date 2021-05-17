@@ -204,7 +204,8 @@
             div.transition()
                 .duration(300)
                .style("opacity", 1);
-            div.html(d.nom + "<br/>" + (d.tel) + " " + d.serie)
+            div.html(d.nom + "<br/>tel:" + ((d.tel).indexOf("null") >= 0 ? " " : d.tel) + " " +
+            ((d.serie).indexOf("null") >= 0 ? " " : d.serie) )
                .style("left", (d3.event.pageX) + "px")
                .style("top", (d3.event.pageY - 28) + "px");
 
