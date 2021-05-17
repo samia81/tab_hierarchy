@@ -24,6 +24,7 @@
          "children": []
 
       };
+     // document.style.fontFamily = "Arial, Sans Serif";
       function add_fils(child_l2, name_f, type_image, compteur_fils, data_h) {
          level++
          var icon = "";
@@ -207,8 +208,7 @@
 
          function mousemove(d) {
             div
-            div.html(d.nom + "<br/>الهاتف:" + ((d.tel).indexOf("null") >= 0 ? "" : d.tel) + " <br/> الرقم التسلسلي" +
-            ((d.serie).indexOf("null") >= 0 ? " " : d.serie) )
+            div.html(d.nom + "<br/>الهاتف:" + ((d.tel).indexOf("null") >= 0 ? "" : d.tel) + " <br/> الرقم التسلسلي" + d.serie )
             
                .style("left", (d3.event.pageX) + "px")
                .style("top", (d3.event.pageY) + "px")
