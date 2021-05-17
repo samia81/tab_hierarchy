@@ -201,10 +201,7 @@
             update(d);*/            
          }
 
-         function mouseover(d) {
 
-
-         }
 
          function mousemove(d) {
             div
@@ -241,7 +238,7 @@
                //.attr("y", "-12px")
                .attr("width", rectW)
                .attr("height", rectH)
-               .on("mouseover", function (d) { mouseover(d); })
+               .on("mouseover", function (d) { mousemove(d); })
                .on("mousemove", function (d) { mousemove(d); })
                .on("mouseout", mouseout);;
 
