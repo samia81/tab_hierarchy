@@ -1,6 +1,6 @@
 'use strict';
 (function () {
-   var level=1
+   var level = 1
    $(document).ready(function () {
       // Initialises Tableau Data Extension
       tableau.extensions.initializeAsync().then(function () {
@@ -44,35 +44,38 @@
                   var fils_2 = {
                      "name": cin_level2,
                      "children": [],
-                     "icon": icon
+                     "icon": icon,
+                     "nom" :data_h[j][4].value,
+                     "tel" :data_h[j][5].value,
+                     "serie":data_h[j][6].value
                   }
                   child_l2.push(fils_2)
-                  if (level<=2 ){
+                  if (level <= 2) {
                      add_fils(fils_2['children'], cin_level2, 'blanc', 1, data_h)
                      level--
                   }
                   nbre_fils--;
-               
+
                }
             }
             for (var k = 0; k < nbre_fils; k++) {
                var fils_2 = {
-                  "name": "vide",
+                  "name": "-",
                   "children": [],
                   "icon": image_g
                }
                child_l2.push(fils_2)
-               if (level<=2 ) {
-                     add_fils(fils_2['children'], "vide", 'gris', 1, data_h)
-                     level--
-                     
+               if (level <= 2) {
+                  add_fils(fils_2['children'], "vide", 'gris', 1, data_h)
+                  level--
+
                }
 
             }
-            
+
             //}
          }
-         
+
       }
       // Call a function on the worksheet Object to get the Summary Data.
       worksheet.getSummaryDataAsync().then(function (sumdata) {
@@ -88,12 +91,16 @@
 
          // cin, affil, equipe1,role
          var sondeur = "", papa = "", cin = "";
-         
+
          for (var i = 0; i < worksheetData.length; i++) {
             cin = worksheetData[i][0].formattedValue
             papa = worksheetData[i][1].value
             if (papa.indexOf("null") >= 0 && worksheetData[i][3].value == "sondeur") {
                sondeur = cin
+               arbre_equipe["nom"] =  worksheetData[i][4].value,
+               arbre_equipe["tel"] =  worksheetData[i][5].value,
+               arbre_equipe["serie"] =  worksheetData[i][6].value
+               
             }
          }
          var compteur_equipe = equipe1.value;
@@ -104,11 +111,14 @@
                var fils = {
                   "name": cin_level1,
                   "children": [],
-                  "icon": image_i
+                  "icon": image_i,
+                  "nom" :worksheetData[i][4].value,
+                  "tel" :worksheetData[i][5].value,
+                  "serie":worksheetData[i][6].value
                }
                arbre_equipe["children"].push(fils)
                add_fils(fils["children"], cin_level1, "blanc", 1, worksheetData)
-               level=1
+               level = 1
                compteur_equipe = compteur_equipe - 1;
 
             }
@@ -150,7 +160,9 @@
          }
 
          var zm = d3.behavior.zoom().scaleExtent([1, 3]).on("zoom", redraw)
-         var svg = d3.select("#chart").append("svg").attr("width", width).attr("height", height)
+         var svg = d3.select("#chart").append("svg")
+         .attr("width", width)
+         .attr("height", height)
             .attr("style", "position: absolute;")
             .call(zm)
 
@@ -159,14 +171,15 @@
 
          var div = d3.select("body").append("div")
             .attr("class", "tooltip")
-            .style("opacity", 1e-6);
+            .style("opacity", 0);
+         //var   div = d3.select("#toolTip")
 
          //necessary so that zoom knows where to zoom and unzoom from
          zm.translate([350, 20]);
-         
-         root.x0 = width/ 2 ;
+
+         root.x0 = width / 2;
          root.y0 = 0;
-          
+
          function collapse(d) {
             if (d.children) {
                d._children = d.children;
@@ -184,19 +197,25 @@
                d.children = d._children;
                d._children = null;
             }
-            update(d);*/
+            update(d);*/            
          }
-         function mouseover() {
+
+         function mouseover(d) {
             div.transition()
-               .duration(300)
+                .duration(300)
                .style("opacity", 1);
+            div.html(d.nom + "<br/>" + (d.tel) + " " + d.serie)
+               .style("left", (d3.event.pageX) + "px")
+               .style("top", (d3.event.pageY - 28) + "px");
+
          }
 
          function mousemove(d) {
             div
-               .text("Info about " + d.name + ":" + d.info)
+               .html(d.nom + "<br/>" + (d.tel) + " " + d.serie)
                .style("left", (d3.event.pageX) + "px")
-               .style("top", (d3.event.pageY) + "px");
+               .style("top", (d3.event.pageY) + "px")
+               .style("opacity", 1);
          }
 
          function update(source) {
@@ -214,7 +233,10 @@
             var node = svg.selectAll("g.node")
                .data(nodes, function (d) {
                   return d.id || (d.id = ++i);
-               });
+               })
+
+
+
 
             node.append("image")
                .attr("xlink:href", function (d) { return d.icon; })
@@ -222,16 +244,17 @@
                //.attr("y", "-12px")
                .attr("width", rectW)
                .attr("height", rectH)
-               .on("mouseover", mouseover)
+               .on("mouseover", function (d) { mouseover(d); })
                .on("mousemove", function (d) { mousemove(d); })
-               .on("mouseout", mouseout);
+               .on("mouseout", mouseout);;
+
             // Enter any new nodes at the parent's previous position.
             var nodeEnter = node.enter().append("g")
                .attr("class", "node")
                .attr("transform", function (d) {
                   return "translate(" + source.x0 + "," + source.y0 + ")";
                })
-               .on("click", click)
+              // .on("click", click)
 
 
 
