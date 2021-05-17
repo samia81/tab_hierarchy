@@ -208,7 +208,7 @@
 
          function mousemove(d) {
             div
-            div.html(d.nom + "<br/>الهاتف:" + ((d.tel).indexOf("null") >= 0 ? "" : d.tel) + " <br/> الرقم التسلسلي" + d.serie )
+            div.html(d.nom + "<br/>الهاتف:" + ((d.tel).indexOf("null") >= 0 ? "" : d.tel) + " :الرقم التسلسلي " + d.serie )
             
                .style("left", (d3.event.pageX) + "px")
                .style("top", (d3.event.pageY) + "px")
