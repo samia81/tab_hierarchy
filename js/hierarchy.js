@@ -129,13 +129,13 @@
 
          // Draw the chart as before.
          var margin = {
-            top: 20,
+            top: 40,
             right: 20,
             bottom: 20,
             left: 20
          },
-            width = 2050 - margin.right - margin.left,
-            height = 630 - margin.top - margin.bottom;
+            width = 3050 - margin.right - margin.left,
+            height = 1000 - margin.top - margin.bottom;
 
 
 
