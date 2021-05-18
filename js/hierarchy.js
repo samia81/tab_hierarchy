@@ -134,8 +134,8 @@
             bottom: 20,
             left: 20
          },
-            width = 1050 - margin.right - margin.left,
-            height = 330 - margin.top - margin.bottom;
+            width = 2050 - margin.right - margin.left,
+            height = 630 - margin.top - margin.bottom;
 
 
 
