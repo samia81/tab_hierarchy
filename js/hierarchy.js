@@ -143,7 +143,7 @@
          var i = 0,
             duration = 750,
             rectW = 40,
-            rectH = 60;
+            rectH = 50;
 
          //var tree = d3.layout.tree().nodeSize([rectW, rectH]);
          var tree = d3.layout.tree().size([height, width]);
@@ -220,7 +220,7 @@
 
             // Normalize for fixed-depth.
             nodes.forEach(function (d) {
-               d.y = d.depth * 120;
+               d.y = d.depth * 100;
             });
 
             // Update the nodes…
