@@ -129,7 +129,7 @@
 
          // Draw the chart as before.
          var margin = {
-            top: 40,
+            top: 200,
             right: 20,
             bottom: 20,
             left: 20
@@ -142,8 +142,8 @@
          var root = arbre_equipe
          var i = 0,
             duration = 750,
-            rectW = 20,
-            rectH = 30;
+            rectW = 40,
+            rectH = 60;
 
          //var tree = d3.layout.tree().nodeSize([rectW, rectH]);
          var tree = d3.layout.tree().size([height, width]);
