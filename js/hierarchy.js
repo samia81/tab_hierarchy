@@ -17,7 +17,7 @@
       var worksheet = worksheets.find(function (sheet) {
          return sheet.name === "data";
       });
-      var image_i = "https://hierarchy.netlify.app/image/blanc.png", image_g = "https://hierarchy.netlify.app/image/gris.png"
+      var image_i = "https://hierarchy.netlify.app/image/Bleu.png", image_g = "https://hierarchy.netlify.app/image/Blanc_n.png"
       var arbre_equipe = {
          "name": "Sondeur",
          "icon": image_i,
@@ -165,7 +165,7 @@
          .attr("width", width)
          .attr("height", height)
             .attr("style", "position: absolute;")
-            .call(zm)
+            //.call(zm)
 
          var g = svg.append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
